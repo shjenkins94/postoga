@@ -54,8 +54,9 @@ class Log:
     def __init__(self, path: str, log_file: str):
         self.log_file = os.path.join(path, log_file)
         self.version = __version__
-        self.commit = shell(Constants.Commands.COMMIT)
-        self.branch = shell(Constants.Commands.BRANCH)
+        self.gitdir = os.path.dirname(os.path.abspath(__file__))
+        self.commit = shell(f"git rev-parse -C {self.gitdir} --short HEAD")
+        self.branch = shell(f"git rev-parse -C {self.gitdir} --abbrev-ref HEAD")
 
     def start(self):
         logging.basicConfig(
